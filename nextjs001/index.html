@@ -1,0 +1,48 @@
+<h2>Todoリスト</h2>
+<input type="text" id="todo-input" placeholder="新しいタスクを追加">
+<button id="add-button">追加</button>
+<ul id="todo-list"></ul>
+
+<script>
+  const todoInput = document.getElementById('todo-input');
+  const addButton = document.getElementById('add-button');
+  const todoList = document.getElementById('todo-list');
+
+  addButton.addEventListener('click', addTodo);
+  todoInput.addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') {
+      addTodo();
+    }
+  });
+
+  function addTodo() {
+    const task = todoInput.value.trim();
+    if (task !== '') {
+      const li = document.createElement('li');
+      li.innerHTML = `
+        <span>${task}</span>
+        <button class="delete-button">削除</button>
+        <button class="complete-button">完了</button>
+      `;
+      todoList.appendChild(li);
+      todoInput.value = '';
+
+      const deleteButton = li.querySelector('.delete-button');
+      deleteButton.addEventListener('click', function () {
+        li.remove();
+      });
+
+      const completeButton = li.querySelector('.complete-button');
+      completeButton.addEventListener('click', function () {
+        li.classList.toggle('completed');
+      });
+    }
+  }
+</script>
+
+<style>
+  .completed {
+    text-decoration: line-through;
+    color: #888;
+  }
+</style>
