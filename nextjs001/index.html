@@ -1,48 +1,143 @@
-<h2>Todoリスト</h2>
-<input type="text" id="todo-input" placeholder="新しいタスクを追加">
-<button id="add-button">追加</button>
-<ul id="todo-list"></ul>
+<!DOCTYPE html>
+<html lang="ja">
 
-<script>
-  const todoInput = document.getElementById('todo-input');
-  const addButton = document.getElementById('add-button');
-  const todoList = document.getElementById('todo-list');
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>シンプルTodoリスト</title>
+  <style>
+    body {
+      font-family: 'Helvetica', 'Arial', sans-serif;
+      background-color: #f0f0f0;
+      color: #333;
+      line-height: 1.6;
+      padding: 20px;
+    }
 
-  addButton.addEventListener('click', addTodo);
-  todoInput.addEventListener('keypress', function (e) {
-    if (e.key === 'Enter') {
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+    }
+
+    #todo-form {
+      display: flex;
+      margin-bottom: 20px;
+    }
+
+    #todo-input {
+      flex-grow: 1;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ddd;
+      border-radius: 4px 0 0 4px;
+    }
+
+    #add-button {
+      padding: 10px 15px;
+      font-size: 16px;
+      background-color: #3498db;
+      color: #fff;
+      border: none;
+      border-radius: 0 4px 4px 0;
+      cursor: pointer;
+    }
+
+    #todo-list {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    #todo-list li {
+      background-color: #f9f9f9;
+      border: 1px solid #ddd;
+      margin-bottom: 10px;
+      padding: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .todo-buttons button {
+      margin-left: 5px;
+      padding: 5px 10px;
+      font-size: 14px;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    .delete-button {
+      background-color: #e74c3c;
+      color: #fff;
+    }
+
+    .complete-button {
+      background-color: #2ecc71;
+      color: #fff;
+    }
+
+    .completed span {
+      text-decoration: line-through;
+      color: #888;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Todoリスト</h1>
+    <form id="todo-form">
+      <input type="text" id="todo-input" placeholder="新しいタスクを入力">
+      <button type="submit" id="add-button">追加</button>
+    </form>
+    <ul id="todo-list"></ul>
+  </div>
+
+  <script>
+    const todoForm = document.getElementById('todo-form');
+    const todoInput = document.getElementById('todo-input');
+    const todoList = document.getElementById('todo-list');
+
+    todoForm.addEventListener('submit', function (e) {
+      e.preventDefault();
       addTodo();
+    });
+
+    function addTodo() {
+      const task = todoInput.value.trim();
+      if (task !== '') {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <span>${task}</span>
+          <div class="todo-buttons">
+            <button class="complete-button">完了</button>
+            <button class="delete-button">削除</button>
+          </div>
+        `;
+        todoList.appendChild(li);
+        todoInput.value = '';
+
+        const deleteButton = li.querySelector('.delete-button');
+        deleteButton.addEventListener('click', function () {
+          li.remove();
+        });
+
+        const completeButton = li.querySelector('.complete-button');
+        completeButton.addEventListener('click', function () {
+          li.classList.toggle('completed');
+        });
+      }
     }
-  });
+  </script>
+</body>
 
-  function addTodo() {
-    const task = todoInput.value.trim();
-    if (task !== '') {
-      const li = document.createElement('li');
-      li.innerHTML = `
-        <span>${task}</span>
-        <button class="delete-button">削除</button>
-        <button class="complete-button">完了</button>
-      `;
-      todoList.appendChild(li);
-      todoInput.value = '';
-
-      const deleteButton = li.querySelector('.delete-button');
-      deleteButton.addEventListener('click', function () {
-        li.remove();
-      });
-
-      const completeButton = li.querySelector('.complete-button');
-      completeButton.addEventListener('click', function () {
-        li.classList.toggle('completed');
-      });
-    }
-  }
-</script>
-
-<style>
-  .completed {
-    text-decoration: line-through;
-    color: #888;
-  }
-</style>
+</html>
