@@ -24,10 +24,14 @@ interface WeekData {
 }
 
 export default function Home() {
-  const [currentWeek, setCurrentWeek] = useState<WeekData>({
-    startDate: getMonday(new Date()).toISOString().split('T')[0],
-    todos: {},
-    goals: []
+  const [currentWeek, setCurrentWeek] = useState<WeekData>(() => {
+    const today = new Date();
+    const monday = getMonday(today);
+    return {
+      startDate: monday.toISOString().split('T')[0],
+      todos: {},
+      goals: []
+    };
   });
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [newYearlyGoal, setNewYearlyGoal] = useState("");
@@ -293,9 +297,11 @@ export default function Home() {
 
   const isCurrentWeek = (date: Date) => {
     const weekStart = new Date(currentWeek.startDate);
+    weekStart.setHours(0, 0, 0, 0);
     const weekEnd = new Date(weekStart);
-    weekEnd.setDate(weekEnd.getDate() + 6); // 日曜日まで
-    return date >= weekStart && date <= weekEnd;
+    weekEnd.setDate(weekEnd.getDate() + 7);
+    weekEnd.setHours(0, 0, 0, 0);
+    return date >= weekStart && date < weekEnd;
   };
 
   const changeMonth = (delta: number) => {
@@ -337,7 +343,7 @@ export default function Home() {
         <button onClick={() => changeWeek(-1)} className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition duration-300">
           <FaChevronLeft className="inline mr-2" /> 前の週
         </button>
-        <span className="text-lg font-semibold">
+        <span className="text-lg font-semibold text-gray-500 font-medium">
           {formatWeekRange(currentWeek.startDate)}
         </span>
         <button onClick={() => changeWeek(1)} className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition duration-300">
@@ -378,8 +384,8 @@ export default function Home() {
                       <td key={j} className={`p-3 text-center border border-indigo-100
                         ${day.getMonth() === currentMonth.getMonth() ? 'hover:bg-indigo-50 transition-colors' : 'bg-gray-50'}
                         ${isCurrentWeek(day) ? 'bg-indigo-100' : ''}
-                        ${getDayColor(day, j)}
                         ${isToday(day) ? 'bg-yellow-300 font-bold' : ''}
+                        ${getDayColor(day, j)}
                       `}>
                         {day.getDate()}
                       </td>
