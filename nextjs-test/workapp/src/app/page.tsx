@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { FaPlus, FaCheck, FaTimes, FaCalendarAlt, FaBullseye, FaTrash, FaArrowLeft, FaArrowRight, FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { FaPlus, FaCheck, FaTimes, FaCalendarAlt, FaBullseye, FaTrash, FaArrowLeft, FaArrowRight, FaChevronLeft, FaChevronRight, FaGripVertical } from "react-icons/fa";
+import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
 
 interface Todo {
   id: number;
@@ -122,7 +123,7 @@ export default function Home() {
     });
   };
 
-  // 現在の週の開始日が正しいフォーマットであることを確認
+  // 現在の週の開始日がしいフォーマットであることを確認
   const safeStartDate = (() => {
     try {
       return new Date(currentWeek.startDate).toISOString().split('T')[0];
@@ -335,133 +336,157 @@ export default function Home() {
     return `${startStr}〜${endStr}`;
   };
 
+  const onDragEnd = (result: DropResult) => {
+    const { source, destination } = result;
+
+    if (!destination) {
+      return;
+    }
+
+    setCurrentWeek(prevWeek => {
+      const newTodos = { ...prevWeek.todos };
+      const sourceDate = source.droppableId;
+      const destDate = destination.droppableId;
+
+      if (!newTodos[sourceDate]) newTodos[sourceDate] = [];
+      if (!newTodos[destDate]) newTodos[destDate] = [];
+
+      const [movedTodo] = newTodos[sourceDate].splice(source.index, 1);
+      newTodos[destDate].splice(destination.index, 0, movedTodo);
+
+      return { ...prevWeek, todos: newTodos };
+    });
+  };
+
   return (
-    <main className="flex min-h-screen flex-col items-center p-8 bg-gray-100">
-      <h1 className="text-4xl font-bold mb-8 text-center text-indigo-800">週間プランナー</h1>
-      
-      <div className="flex justify-center items-center mb-4 space-x-4">
-        <button onClick={() => changeWeek(-1)} className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition duration-300">
-          <FaChevronLeft className="inline mr-2" /> 前の週
-        </button>
-        <span className="text-lg font-semibold text-gray-500 font-medium">
-          {formatWeekRange(currentWeek.startDate)}
-        </span>
-        <button onClick={() => changeWeek(1)} className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition duration-300">
-          次の週 <FaChevronRight className="inline ml-2" />
-        </button>
-      </div>
-      
-      <div className="flex flex-col lg:flex-row w-full max-w-7xl gap-8">
-        {/* 左側：カレンダーと週間目標 */}
-        <div className="w-full lg:w-1/2 space-y-8">
-          {/* 月間カレンダー */}
-          <div className="bg-white rounded-xl shadow-lg p-6">
-            <div className="flex justify-between items-center mb-4">
-              <button onClick={() => changeMonth(-1)} className="text-indigo-600 hover:text-indigo-800 transition-colors">
-                <FaChevronLeft className="text-xl" />
-              </button>
-              <h2 className="text-2xl font-semibold text-indigo-800">
-                {currentMonth.toLocaleString('ja-JP', { year: 'numeric', month: 'long' })}
-              </h2>
-              <button onClick={() => changeMonth(1)} className="text-indigo-600 hover:text-indigo-800 transition-colors">
-                <FaChevronRight className="text-xl" />
-              </button>
-            </div>
-            <table className="w-full border-collapse">
-              <thead>
-                <tr>
-                  {['月', '火', '水', '木', '金', '土', '日'].map(day => (
-                    <th key={day} className="p-2 text-center font-semibold text-indigo-800 border-b-2 border-indigo-200">
-                      {day}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {generateCalendar(currentMonth).map((week, i) => (
-                  <tr key={i}>
-                    {week.map((day, j) => (
-                      <td key={j} className={`p-3 text-center border border-indigo-100
-                        ${day.getMonth() === currentMonth.getMonth() ? 'hover:bg-indigo-50 transition-colors' : 'bg-gray-50'}
-                        ${isCurrentWeek(day) ? 'bg-indigo-100' : ''}
-                        ${isToday(day) ? 'bg-yellow-300 font-bold' : ''}
-                        ${getDayColor(day, j)}
-                      `}>
-                        {day.getDate()}
-                      </td>
+    <DragDropContext onDragEnd={onDragEnd}>
+      <main className="flex min-h-screen flex-col items-center p-8 bg-gray-100">
+        <h1 className="text-4xl font-bold mb-8 text-center text-indigo-800">週間プランナー</h1>
+        
+        <div className="flex justify-center items-center mb-4 space-x-4">
+          <button onClick={() => changeWeek(-1)} className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition duration-300">
+            <FaChevronLeft className="inline mr-2" /> 前の週
+          </button>
+          <span className="text-lg font-semibold text-gray-500 font-medium">
+            {formatWeekRange(currentWeek.startDate)}
+          </span>
+          <button onClick={() => changeWeek(1)} className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition duration-300">
+            次の週 <FaChevronRight className="inline ml-2" />
+          </button>
+        </div>
+        
+        <div className="flex flex-col lg:flex-row w-full max-w-7xl gap-8">
+          {/* 左側：カレンダーと週間目標 */}
+          <div className="w-full lg:w-1/2 space-y-8">
+            {/* 月間カレンダー */}
+            <div className="bg-white rounded-xl shadow-lg p-6">
+              <div className="flex justify-between items-center mb-4">
+                <button onClick={() => changeMonth(-1)} className="text-indigo-600 hover:text-indigo-800 transition-colors">
+                  <FaChevronLeft className="text-xl" />
+                </button>
+                <h2 className="text-2xl font-semibold text-indigo-800">
+                  {currentMonth.toLocaleString('ja-JP', { year: 'numeric', month: 'long' })}
+                </h2>
+                <button onClick={() => changeMonth(1)} className="text-indigo-600 hover:text-indigo-800 transition-colors">
+                  <FaChevronRight className="text-xl" />
+                </button>
+              </div>
+              <table className="w-full border-collapse">
+                <thead>
+                  <tr>
+                    {['月', '火', '水', '木', '金', '土', '日'].map(day => (
+                      <th key={day} className="p-2 text-center font-semibold text-indigo-800 border-b-2 border-indigo-200">
+                        {day}
+                      </th>
                     ))}
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          {/* 週間目標 */}
-          <div className="bg-white rounded-xl shadow-lg p-6">
-            <h2 className="text-2xl font-semibold mb-4 text-indigo-800">週間目標</h2>
-            {renderGoalSection("年間")}
-            {renderGoalSection("月間")}
-            {renderGoalSection("週間")}
-          </div>
-        </div>
-
-        {/* 右側：TODOリスト */}
-        <div className="w-full lg:w-1/2">
-          <div className="bg-white rounded-xl shadow-lg p-6 transition-all duration-300 hover:shadow-xl">
-            <h2 className="text-2xl font-semibold mb-6 text-indigo-800 flex items-center">
-              <FaCalendarAlt className="mr-2" /> TODOリスト
-            </h2>
-            {weekDates.map((date) => (
-              <div key={date} className="mb-6">
-                <h3 className="text-lg font-semibold mb-2 text-indigo-700">{formatDate(date)}</h3>
-                
-                <div className="flex mb-4">
-                  <input
-                    type="text"
-                    value={selectedDate === date ? newTodo : ""}
-                    onChange={(e) => {
-                      setSelectedDate(date);
-                      setNewTodo(e.target.value);
-                    }}
-                    placeholder="新しいTODO"
-                    className="flex-grow border-b-2 border-indigo-200 p-2 focus:outline-none focus:border-indigo-500 transition-colors duration-300 text-gray-800 placeholder-gray-400"
-                  />
-                  <button 
-                    onClick={addTodo} 
-                    className="ml-2 bg-indigo-600 text-white p-2 rounded-full hover:bg-indigo-700 transition duration-300"
-                    disabled={selectedDate !== date}
-                  >
-                    <FaPlus />
-                  </button>
-                </div>
-
-                <ul className="space-y-3">
-                  {(currentWeek.todos[date] || []).map((todo) => (
-                    <li key={todo.id} className={`flex items-center p-3 rounded-lg transition-all duration-300 ${todo.completed ? 'bg-gray-100' : 'bg-green-100'}`}>
-                      <button
-                        onClick={() => toggleTodoCompletion(date, todo.id)}
-                        className={`mr-3 p-1 rounded-full transition-colors duration-300 ${todo.completed ? 'bg-gray-400 text-white' : 'bg-green-600 text-white'}`}
-                      >
-                        {todo.completed ? <FaTimes /> : <FaCheck />}
-                      </button>
-                      <span className={`flex-grow ${todo.completed ? 'line-through text-gray-500' : 'text-gray-800 font-medium'}`}>
-                        {todo.text}
-                      </span>
-                      <button
-                        onClick={() => deleteTodo(date, todo.id)}
-                        className="p-1 text-red-500 hover:text-red-700 transition-colors duration-300"
-                      >
-                        <FaTrash />
-                      </button>
-                    </li>
+                </thead>
+                <tbody>
+                  {generateCalendar(currentMonth).map((week, i) => (
+                    <tr key={i}>
+                      {week.map((day, j) => (
+                        <td key={j} className={`p-3 text-center border border-indigo-100
+                          ${day.getMonth() === currentMonth.getMonth() ? 'hover:bg-indigo-50 transition-colors' : 'bg-gray-50'}
+                          ${isCurrentWeek(day) ? 'bg-indigo-100' : ''}
+                          ${isToday(day) ? 'bg-yellow-300 font-bold' : ''}
+                          ${getDayColor(day, j)}
+                        `}>
+                          {day.getDate()}
+                        </td>
+                      ))}
+                    </tr>
                   ))}
-                </ul>
-              </div>
-            ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* 週間目標 */}
+            <div className="bg-white rounded-xl shadow-lg p-6">
+              {/* <h2 className="text-2xl font-semibold mb-4 text-indigo-800">週間目標</h2> */}
+              {renderGoalSection("年間")}
+              {renderGoalSection("月間")}
+              {renderGoalSection("週間")}
+            </div>
+          </div>
+
+          {/* 右側：TODOリスト */}
+          <div className="w-full lg:w-1/2">
+            <div className="bg-white rounded-xl shadow-lg p-6 transition-all duration-300 hover:shadow-xl">
+              <h2 className="text-2xl font-semibold mb-6 text-indigo-800 flex items-center">
+                <FaCalendarAlt className="mr-2" /> TODOリスト
+              </h2>
+              {weekDates.map((date) => (
+                <div key={date} className="mb-6">
+                  <h3 className="text-lg font-semibold mb-2 text-indigo-700">{formatDate(date)}</h3>
+                  
+                  <div className="flex mb-4">
+                    <input
+                      type="text"
+                      value={selectedDate === date ? newTodo : ""}
+                      onChange={(e) => {
+                        setSelectedDate(date);
+                        setNewTodo(e.target.value);
+                      }}
+                      placeholder="新しいTODO"
+                      className="flex-grow border-b-2 border-indigo-200 p-2 focus:outline-none focus:border-indigo-500 transition-colors duration-300 text-gray-800 placeholder-gray-400"
+                    />
+                    <button 
+                      onClick={addTodo} 
+                      className="ml-2 bg-indigo-600 text-white p-2 rounded-full hover:bg-indigo-700 transition duration-300"
+                      disabled={selectedDate !== date}
+                    >
+                      <FaPlus />
+                    </button>
+                  </div>
+
+                  <ul className="space-y-3">
+                    {(currentWeek.todos[date] || []).map((todo) => (
+                      <li key={todo.id} className={`flex items-center p-3 rounded-lg transition-all duration-300 ${todo.completed ? 'bg-gray-100' : 'bg-green-100'}`}>
+                        <button
+                          onClick={() => toggleTodoCompletion(date, todo.id)}
+                          className={`mr-3 p-1 rounded-full transition-colors duration-300 ${todo.completed ? 'bg-gray-400 text-white' : 'bg-green-600 text-white'}`}
+                        >
+                          {todo.completed ? <FaTimes /> : <FaCheck />}
+                        </button>
+                        <span className={`flex-grow ${todo.completed ? 'line-through text-gray-500' : 'text-gray-800 font-medium'}`}>
+                          {todo.text}
+                        </span>
+                        <button
+                          onClick={() => deleteTodo(date, todo.id)}
+                          className="p-1 text-red-500 hover:text-red-700 transition-colors duration-300"
+                        >
+                          <FaTrash />
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </DragDropContext>
   );
 }
 
