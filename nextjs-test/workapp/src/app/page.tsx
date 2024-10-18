@@ -1,15 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, FormEvent } from 'react';
 import { FaPlus, FaCheck, FaTimes, FaCalendarAlt, FaBullseye, FaTrash, FaArrowLeft, FaArrowRight, FaChevronLeft, FaChevronRight, FaGripVertical } from "react-icons/fa";
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
+import YGoals from '../../components/YGoals';
+import {ygoals} from '../../utils/interface';
 
-interface Todo {
-  id: number;
-  text: string;
-  date: string;
-  completed: boolean;
-}
+import { getYearGoals } from "../../utils/supabaseFunctions";
+
 
 interface Goal {
   id: number;
@@ -358,8 +356,67 @@ export default function Home() {
     });
   };
 
+  const handleGoalSubmit = (e: FormEvent<HTMLFormElement>, goalType: 'yearly' | 'monthly' | 'weekly') => {
+    e.preventDefault();
+    const input = e.currentTarget.elements.namedItem('newGoal') as HTMLInputElement;
+    if (input.value.trim()) {
+      addGoal(goalType, input.value.trim());
+      input.value = '';
+    }
+  };
+
+  const handleTodoSubmit = (e: FormEvent<HTMLFormElement>, dateStr: string) => {
+    e.preventDefault();
+    const input = e.currentTarget.elements.namedItem('newTodo') as HTMLInputElement;
+    if (input.value.trim()) {
+      addTodo(dateStr, input.value.trim());
+      input.value = '';
+    }
+  };
+
+
+
+  type Props = {
+    yeargoals: ygoals[];
+  }
+  const YGoal = (props: Props) => {
+    const {yeargoals} = props;
+
+    return(
+      <ul>
+        {yeargoals.map((ygoal) =>(
+          <li key={ygoal.id}>{ygoal.goal}</li>
+        ))}
+      </ul>
+    )
+  }
+  
+  interface Todo {
+    id: number;
+    text: string;
+    date: string;
+    completed: boolean;
+  }
+
+
+
+  const [yeargoals, setYGoals] = useState<any>([]);
+  useEffect(() => {
+    const getYGoals = async() => {
+      const yeargoals = await getYearGoals();
+      setYGoals(yeargoals);
+      console.log("テスト");
+      console.log(yeargoals);
+    }
+    getYGoals();
+  }, []);
+  
+
+  
   return (
     <DragDropContext onDragEnd={onDragEnd}>
+      <YGoals yeargoals={yeargoals} />
+
       <main className="flex min-h-screen flex-col items-center p-8 bg-gray-100">
         <h1 className="text-4xl font-bold mb-8 text-center text-indigo-800">週間プランナー</h1>
         
@@ -429,7 +486,7 @@ export default function Home() {
             </div>
           </div>
 
-          {/* 右側：TODOリスト */}
+          {/* 右側：TODO���ト */}
           <div className="w-full lg:w-1/2">
             <div className="bg-white rounded-xl shadow-lg p-6 transition-all duration-300 hover:shadow-xl">
               <h2 className="text-2xl font-semibold mb-6 text-indigo-800 flex items-center">
@@ -446,6 +503,12 @@ export default function Home() {
                       onChange={(e) => {
                         setSelectedDate(date);
                         setNewTodo(e.target.value);
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault(); // フォームの送信を防ぐ1   
+                          addTodo();
+                        }
                       }}
                       placeholder="新しいTODO"
                       className="flex-grow border-b-2 border-indigo-200 p-2 focus:outline-none focus:border-indigo-500 transition-colors duration-300 text-gray-800 placeholder-gray-400"
