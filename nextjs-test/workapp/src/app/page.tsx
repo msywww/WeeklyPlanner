@@ -3,7 +3,7 @@
 import React, { useState, useEffect, FormEvent } from 'react';
 import { FaPlus, FaCheck, FaTimes, FaCalendarAlt, FaBullseye, FaTrash, FaArrowLeft, FaArrowRight, FaChevronLeft, FaChevronRight, FaGripVertical } from "react-icons/fa";
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
-import YGoals from '../../components/YGoals';
+import YGoalsApp from '../../components/YGoalsApp';
 import {ygoals} from '../../utils/interface';
 
 import { getYearGoals } from "../../utils/supabaseFunctions";
@@ -376,47 +376,46 @@ export default function Home() {
 
 
 
-  type Props = {
-    yeargoals: ygoals[];
-  }
-  const YGoal = (props: Props) => {
-    const {yeargoals} = props;
+  // type Props = {
+  //   yeargoals: ygoals[];
+  // }
+  // const YGoal = (props: Props) => {
+  //   const {yeargoals} = props;
 
-    return(
-      <ul>
-        {yeargoals.map((ygoal) =>(
-          <li key={ygoal.id}>{ygoal.goal}</li>
-        ))}
-      </ul>
-    )
-  }
+  //   return(
+  //     <ul>
+  //       {yeargoals.map((ygoal) =>(
+  //         <li key={ygoal.id}>{ygoal.goal}</li>
+  //       ))}
+  //     </ul>
+  //   )
+  // }
   
-  interface Todo {
-    id: number;
-    text: string;
-    date: string;
-    completed: boolean;
-  }
+  // interface Todo {
+  //   id: number;
+  //   text: string;
+  //   date: string;
+  //   completed: boolean;
+  // }
 
 
 
-  const [yeargoals, setYGoals] = useState<any>([]);
-  useEffect(() => {
-    const getYGoals = async() => {
-      const yeargoals = await getYearGoals();
-      setYGoals(yeargoals);
-      console.log("テスト");
-      console.log(yeargoals);
-    }
-    getYGoals();
-  }, []);
+  // const [yeargoals, setYGoals] = useState<any>([]);
+  // useEffect(() => {
+  //   const getYGoals = async() => {
+  //     const yeargoals = await getYearGoals();
+  //     setYGoals(yeargoals);
+  //     console.log(yeargoals);
+  //   }
+  //   getYGoals();
+  // }, []);
   
 
   
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <YGoals yeargoals={yeargoals} />
-
+      <YGoalsApp />
+      
       <main className="flex min-h-screen flex-col items-center p-8 bg-gray-100">
         <h1 className="text-4xl font-bold mb-8 text-center text-indigo-800">週間プランナー</h1>
         
