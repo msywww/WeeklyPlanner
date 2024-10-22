@@ -413,9 +413,7 @@ export default function Home() {
 
   
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <YGoalsApp />
-      
+    <DragDropContext onDragEnd={onDragEnd}>      
       <main className="flex min-h-screen flex-col items-center p-8 bg-gray-100">
         <h1 className="text-4xl font-bold mb-8 text-center text-indigo-800">週間プランナー</h1>
         
