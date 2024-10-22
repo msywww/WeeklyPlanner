@@ -1,6 +1,7 @@
 import React, { useEffect, useState} from "react";
 // import { addYearGoals, getYearGoals, deleteYearGoals } from "../utils/supabaseFunctions";
 import * as supabaseFunctions from "../utils/supabaseFunctions";
+import { FaPlus, FaCheck, FaTimes, FaCalendarAlt, FaBullseye, FaTrash, FaArrowLeft, FaArrowRight, FaChevronLeft, FaChevronRight, FaGripVertical } from "react-icons/fa";
 import {ygoals} from '../utils/interface';
 import YGoalslist from "./YGoalsList";
 
@@ -86,6 +87,7 @@ function YGoalsApp({ type }: YGoalsAppProps) {
       setGoal("");
     }
   };
+  
 
   const getTitle = () => {
     switch (type) {
@@ -100,29 +102,52 @@ function YGoalsApp({ type }: YGoalsAppProps) {
 
   // ... 既存のreturn文 ...
   return(
-    <div>
-      <h1>{getTitle()}</h1>
-      <form onSubmit={(e) => handleSubmit(e)}>
-        <input type="text" onChange={(e) => setGoal(e.target.value)} value={goal}/>
-        <button>Add</button>
+    <div className="mb-6">
+      <h3 className="text-xl font-semibold mb-3 text-indigo-700">{getTitle()}</h3>
+      <form
+        onSubmit={(e) => handleSubmit(e)}
+        className="flex mb-4"
+      >
+        <input 
+          type="text"
+          onChange={(e) => setGoal(e.target.value)}
+          value={goal}
+          placeholder={`新しい${getTitle()}`}
+          className="flex-grow border-b-2 border-indigo-200 p-2 focus:outline-none focus:border-indigo-500 transition-colors duration-300 text-gray-800 placeholder-gray-400"
+        />
+        <button className="ml-2 bg-indigo-600 text-white p-2 rounded-full hover:bg-indigo-700 transition duration-300">
+          <FaPlus />
+        </button>
       </form>
-      <ul className="mx-auto">
+      <ul className="space-y-2">
           {goals.map((goal:any) => (
-            <div
-              key={goal.id}
-              className="flex bg-orange-200 rounded-md mt-2 mb-2 p-2 justify-between"
-            >
-              <li className="font-medium">✅ {goal.goal}</li>
-              <span
-                className="cursor-pointer"
-                onClick={() => handleDelete(goal.id)}
+            // <div
+            //   key={goal.id}
+            //   className="flex bg-orange-200 rounded-md mt-2 mb-2 p-2 justify-between"
+            // >
+              <li key={goal.id} className={`flex items-center p-2 rounded-lg transition-all duration-300 ${goal.achieved ? 'bg-gray-100' : 'bg-green-100()'}`}>
+              <button
+                onClick={() => toggleGoalAchievement(goal.id)}
+                className={`mr-2 p-1 rounded-full transition-colors duration-300 ${goal.achieved ? 'bg-gray-400 text-white' : 'bg-green-600 text-white'}`}
               >
-                ✖
+                {goal.achieved ? <FaTimes /> : <FaCheck />}
+              </button>
+              <span className={`flex-grow ${goal.achieved ? 'line-through text-gray-500' : 'text-gray-800 font-medium'}`}>
+                {goal.goal}
               </span>
-            </div>
+              <button
+                onClick={() => handleDelete(goal.id)}
+                className="p-1 text-red-500 hover:text-red-700 transition-colors duration-300"
+              >
+                <FaTrash />
+              </button>
+              </li>
+            // </div>
           ))}
         </ul>
     </div>
+
+
   )
 }
 
