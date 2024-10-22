@@ -480,8 +480,11 @@ export default function Home() {
             <div className="bg-white rounded-xl shadow-lg p-6">
               {/* <h2 className="text-2xl font-semibold mb-4 text-indigo-800">週間目標</h2> */}
               {renderGoalSection("年間")}
+              <YGoalsApp type="year" />
               {renderGoalSection("月間")}
+              <YGoalsApp type="month" />
               {renderGoalSection("週間")}
+              <YGoalsApp type="week" />
             </div>
           </div>
 

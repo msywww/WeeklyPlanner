@@ -1,8 +1,9 @@
 import supabase from "./supabase";
 
+// 年間目標
 export const getYearGoals = async() => {
-  const yeargols = await supabase.from("year-goal").select("*");
-  return yeargols.data;
+  const yeargoals = await supabase.from("year-goal").select("*");
+  return yeargoals.data;
 };
 
 export const addYearGoals = async(goal: any) => {
@@ -11,4 +12,32 @@ export const addYearGoals = async(goal: any) => {
 
 export const deleteYearGoals = async(id: number) => {
   await supabase.from("year-goal").delete().eq("id",id);
+};
+
+// 月間目標
+export const getMonthGoals = async() => {
+  const monthgoals = await supabase.from("month-goal").select("*");
+  return monthgoals.data;
+};
+
+export const addMonthGoals = async(goal: any) => {
+  await supabase.from("month-goal").insert({goal: goal});
+};
+
+export const deleteMonthGoals = async(id: number) => {
+  await supabase.from("month-goal").delete().eq("id",id);
+};
+
+// 週間目標
+export const getWeekGoals = async() => {
+  const weekgoals = await supabase.from("week-goal").select("*");
+  return weekgoals.data;
+};
+
+export const addWeekGoals = async(goal: any) => {
+  await supabase.from("week-goal").insert({goal: goal});
+};
+
+export const deleteWeekGoals = async(id: number) => {
+  await supabase.from("week-goal").delete().eq("id",id);
 };
