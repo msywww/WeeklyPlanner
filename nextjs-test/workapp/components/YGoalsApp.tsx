@@ -2,8 +2,6 @@ import React, { useEffect, useState} from "react";
 // import { addYearGoals, getYearGoals, deleteYearGoals } from "../utils/supabaseFunctions";
 import * as supabaseFunctions from "../utils/supabaseFunctions";
 import { FaPlus, FaCheck, FaTimes, FaCalendarAlt, FaBullseye, FaTrash, FaArrowLeft, FaArrowRight, FaChevronLeft, FaChevronRight, FaGripVertical } from "react-icons/fa";
-import {ygoals} from '../utils/interface';
-import YGoalslist from "./YGoalsList";
 
 type YGoalsAppProps = {
   type: 'year' | 'week' | 'month';
@@ -134,33 +132,33 @@ function YGoalsApp({ type }: YGoalsAppProps) {
           onChange={(e) => setGoal(e.target.value)}
           value={goal}
           placeholder={`新しい${getTitle()}`}
-          className="flex-grow border-b-2 border-indigo-200 p-2 focus:outline-none focus:border-indigo-500 transition-colors duration-300 text-gray-800 placeholder-gray-400"
+          className="flex-grow border-b-2 border-indigo-200 p-1 focus:outline-none focus:border-indigo-500 transition-colors duration-300 text-gray-800 placeholder-gray-400"
         />
-        <button className="ml-2 bg-indigo-600 text-white p-2 rounded-full hover:bg-indigo-700 transition duration-300">
+        <button className="ml-2 bg-indigo-600 text-white p-2 hover:bg-indigo-700 transition duration-300">
           <FaPlus />
         </button>
       </form>
       <ul className="space-y-2">
-          {goals.sort((a, b) => a.id - b.id).map((goal:any) => (
-              <li key={goal.id} className={`flex items-center p-2 rounded-lg transition-all duration-300 ${goal.complete ? 'bg-gray-100' : 'bg-green-100()'}`}>
-              <button
-                onClick={() => handleComplete(goal.id)}
-                className={`mr-2 p-1 rounded-full transition-colors duration-300 ${goal.complete ? 'bg-gray-400 text-white' : 'bg-green-600 text-white'}`}
-              >
-                {goal.achieved ? <FaTimes /> : <FaCheck />}
-              </button>
-              <span className={`flex-grow ${goal.complete ? 'line-through text-gray-500' : 'text-gray-800 font-medium'}`}>
-                {goal.goal}
-              </span>
-              <button
-                onClick={() => handleDelete(goal.id)}
-                className="p-1 text-red-500 hover:text-red-700 transition-colors duration-300"
-              >
-                <FaTrash />
-              </button>
-              </li>
-          ))}
-        </ul>
+        {goals.sort((a, b) => a.id - b.id).map((goal:any) => (
+          <li key={goal.id} className={`flex items-center p-2 rounded-lg transition-all duration-300 ${goal.complete ? 'bg-gray-100' : 'bg-green-100'}`}>
+          <button
+            onClick={() => handleComplete(goal.id)}
+            className={`mr-2 p-1 transition-colors duration-300 ${goal.complete ? 'bg-gray-400 text-white' : 'bg-green-600 text-white'}`}
+          >
+            {goal.achieved ? <FaTimes /> : <FaCheck />}
+          </button>
+          <span className={`flex-grow ${goal.complete ? 'line-through text-gray-500' : 'text-gray-800 font-medium'}`}>
+            {goal.goal}
+          </span>
+          <button
+            onClick={() => handleDelete(goal.id)}
+            className="p-1 text-red-500 hover:text-red-700 transition-colors duration-300"
+          >
+            <FaTrash />
+          </button>
+          </li>
+        ))}
+      </ul>
     </div>
 
 

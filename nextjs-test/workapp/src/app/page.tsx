@@ -4,6 +4,7 @@ import React, { useState, useEffect, FormEvent } from 'react';
 import { FaPlus, FaCheck, FaTimes, FaCalendarAlt, FaBullseye, FaTrash, FaArrowLeft, FaArrowRight, FaChevronLeft, FaChevronRight, FaGripVertical } from "react-icons/fa";
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
 import YGoalsApp from '../../components/YGoalsApp';
+import TodoApp from '../../components/TodoApp';
 import {ygoals} from '../../utils/interface';
 
 import { getYearGoals } from "../../utils/supabaseFunctions";
@@ -477,11 +478,11 @@ export default function Home() {
             {/* 週間目標 */}
             <div className="bg-white rounded-xl shadow-lg p-6">
               {/* <h2 className="text-2xl font-semibold mb-4 text-indigo-800">週間目標</h2> */}
-              {renderGoalSection("年間")}
+              {/* {renderGoalSection("年間")} */}
               <YGoalsApp type="year" />
-              {renderGoalSection("月間")}
+              {/* {renderGoalSection("月間")} */}
               <YGoalsApp type="month" />
-              {renderGoalSection("週間")}
+              {/* {renderGoalSection("週間")} */}
               <YGoalsApp type="week" />
             </div>
           </div>
@@ -494,9 +495,10 @@ export default function Home() {
               </h2>
               {weekDates.map((date) => (
                 <div key={date} className="mb-6">
-                  <h3 className="text-lg font-semibold mb-2 text-indigo-700">{formatDate(date)}</h3>
+                  <TodoApp date={date} />
+                  {/* <h3 className="text-lg font-semibold mb-2 text-indigo-700">{formatDate(date)}</h3> */}
                   
-                  <div className="flex mb-4">
+                  {/* <div className="flex mb-4">
                     <input
                       type="text"
                       value={selectedDate === date ? newTodo : ""}
@@ -542,7 +544,7 @@ export default function Home() {
                         </button>
                       </li>
                     ))}
-                  </ul>
+                  </ul> */}
                 </div>
               ))}
             </div>

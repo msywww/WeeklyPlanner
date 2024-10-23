@@ -87,3 +87,34 @@ export const completeWeekGoals = async(id: number) => {
     .update({ complete: newCompleteStatus })
     .eq("id", id);
 };
+
+
+//TodoList
+export const getTodos = async() => {
+  const todos = await supabase.from("daily-todo").select("*");
+  return todos.data;
+};
+
+export const addTodos = async(todo: any, date: any) => {
+  await supabase.from("daily-todo").insert({todo: todo, date: date});
+};
+
+export const deleteTodos = async(id: number) => {
+  await supabase.from("daily-todo").delete().eq("id",id);
+};
+
+export const completeTodos = async(id: number) => {
+  const { data: currentTodo } = await supabase
+    .from("daily-todo")
+    .select("complete")
+    .eq("id", id)
+    .single();
+    
+  const newCompleteStatus = !currentTodo?.complete;
+
+  await supabase
+    .from("daily-todo")
+    .update({ complete: newCompleteStatus })
+    .eq("id", id);
+};
+
