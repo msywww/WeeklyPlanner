@@ -89,6 +89,27 @@ function YGoalsApp({ type }: YGoalsAppProps) {
   };
   
 
+  const handleComplete = async (id: number) => { 
+    let completeGoalFunction;
+    switch (type) {
+      case 'year':
+        completeGoalFunction = supabaseFunctions.completeYearGoals;
+        break;
+      case 'month':
+        completeGoalFunction = supabaseFunctions.completeMonthGoals;
+        break;
+      case 'week':
+        completeGoalFunction = supabaseFunctions.completeWeekGoals;
+        break;
+    }
+
+    if (completeGoalFunction) {
+      await completeGoalFunction(id);
+      await fetchGoals(); // fetchGoals を直接呼び出す
+      setGoal("");
+    }
+  };
+
   const getTitle = () => {
     switch (type) {
       case 'year':
@@ -120,19 +141,15 @@ function YGoalsApp({ type }: YGoalsAppProps) {
         </button>
       </form>
       <ul className="space-y-2">
-          {goals.map((goal:any) => (
-            // <div
-            //   key={goal.id}
-            //   className="flex bg-orange-200 rounded-md mt-2 mb-2 p-2 justify-between"
-            // >
-              <li key={goal.id} className={`flex items-center p-2 rounded-lg transition-all duration-300 ${goal.achieved ? 'bg-gray-100' : 'bg-green-100()'}`}>
+          {goals.sort((a, b) => a.id - b.id).map((goal:any) => (
+              <li key={goal.id} className={`flex items-center p-2 rounded-lg transition-all duration-300 ${goal.complete ? 'bg-gray-100' : 'bg-green-100()'}`}>
               <button
-                onClick={() => toggleGoalAchievement(goal.id)}
-                className={`mr-2 p-1 rounded-full transition-colors duration-300 ${goal.achieved ? 'bg-gray-400 text-white' : 'bg-green-600 text-white'}`}
+                onClick={() => handleComplete(goal.id)}
+                className={`mr-2 p-1 rounded-full transition-colors duration-300 ${goal.complete ? 'bg-gray-400 text-white' : 'bg-green-600 text-white'}`}
               >
                 {goal.achieved ? <FaTimes /> : <FaCheck />}
               </button>
-              <span className={`flex-grow ${goal.achieved ? 'line-through text-gray-500' : 'text-gray-800 font-medium'}`}>
+              <span className={`flex-grow ${goal.complete ? 'line-through text-gray-500' : 'text-gray-800 font-medium'}`}>
                 {goal.goal}
               </span>
               <button
@@ -142,7 +159,6 @@ function YGoalsApp({ type }: YGoalsAppProps) {
                 <FaTrash />
               </button>
               </li>
-            // </div>
           ))}
         </ul>
     </div>
