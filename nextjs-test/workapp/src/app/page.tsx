@@ -43,7 +43,7 @@ export default function Home() {
 
   useEffect(() => {
     const today = new Date();
-    const monday = new Date(today.setDate(today.getDate() - today.getDay() + 1));
+    const monday = new Date(today.setDate(today.getDate() - today.getDay() + 2));
     const startDate = monday.toISOString().split('T')[0];
     
     if (currentWeek.startDate !== startDate) {
@@ -88,30 +88,30 @@ export default function Home() {
     setCurrentMonth(newStartDate);
   };
 
-  const addGoal = (type: "年間" | "月間" | "週間") => {
-    let newGoal = "";
-    switch (type) {
-      case "年間":
-        newGoal = newYearlyGoal;
-        setNewYearlyGoal("");
-        break;
-      case "月間":
-        newGoal = newMonthlyGoal;
-        setNewMonthlyGoal("");
-        break;
-      case "週間":
-        newGoal = newWeeklyGoal;
-        setNewWeeklyGoal("");
-        break;
-    }
-    if (newGoal.trim() !== "") {
-      const updatedWeek = {
-        ...currentWeek,
-        goals: [...currentWeek.goals, { id: Date.now(), text: newGoal, type: type, achieved: false }]
-      };
-      updateCurrentWeek(updatedWeek);
-    }
-  };
+  // const addGoal = (type: "年間" | "月間" | "週間") => {
+  //   let newGoal = "";
+  //   switch (type) {
+  //     case "年間":
+  //       newGoal = newYearlyGoal;
+  //       setNewYearlyGoal("");
+  //       break;
+  //     case "月間":
+  //       newGoal = newMonthlyGoal;
+  //       setNewMonthlyGoal("");
+  //       break;
+  //     case "週間":
+  //       newGoal = newWeeklyGoal;
+  //       setNewWeeklyGoal("");
+  //       break;
+  //   }
+  //   if (newGoal.trim() !== "") {
+  //     const updatedWeek = {
+  //       ...currentWeek,
+  //       goals: [...currentWeek.goals, { id: Date.now(), text: newGoal, type: type, achieved: false }]
+  //     };
+  //     updateCurrentWeek(updatedWeek);
+  //   }
+  // };
 
   const getWeekDates = (startDateString: string): string[] => {
     const start = new Date(startDateString);
@@ -133,132 +133,132 @@ export default function Home() {
 
   const weekDates = getWeekDates(safeStartDate);
 
-  const addTodo = () => {
-    if (newTodo.trim() !== "" && selectedDate !== "") {
-      const updatedWeek = {
-        ...currentWeek,
-        todos: {
-          ...currentWeek.todos,
-          [selectedDate]: [
-            ...(currentWeek.todos[selectedDate] || []),
-            { id: Date.now(), text: newTodo, date: selectedDate, completed: false }
-          ]
-        }
-      };
-      updateCurrentWeek(updatedWeek);
-      setNewTodo("");
-    }
-  };
+  // const addTodo = () => {
+  //   if (newTodo.trim() !== "" && selectedDate !== "") {
+  //     const updatedWeek = {
+  //       ...currentWeek,
+  //       todos: {
+  //         ...currentWeek.todos,
+  //         [selectedDate]: [
+  //           ...(currentWeek.todos[selectedDate] || []),
+  //           { id: Date.now(), text: newTodo, date: selectedDate, completed: false }
+  //         ]
+  //       }
+  //     };
+  //     updateCurrentWeek(updatedWeek);
+  //     setNewTodo("");
+  //   }
+  // };
 
-  const toggleGoalAchievement = (id: number) => {
-    const updatedWeek = {
-      ...currentWeek,
-      goals: currentWeek.goals.map(goal =>
-        goal.id === id ? { ...goal, achieved: !goal.achieved } : goal
-      )
-    };
-    updateCurrentWeek(updatedWeek);
-  };
+  // const toggleGoalAchievement = (id: number) => {
+  //   const updatedWeek = {
+  //     ...currentWeek,
+  //     goals: currentWeek.goals.map(goal =>
+  //       goal.id === id ? { ...goal, achieved: !goal.achieved } : goal
+  //     )
+  //   };
+  //   updateCurrentWeek(updatedWeek);
+  // };
 
-  const toggleTodoCompletion = (date: string, id: number) => {
-    const updatedWeek = {
-      ...currentWeek,
-      todos: {
-        ...currentWeek.todos,
-        [date]: currentWeek.todos[date].map(todo =>
-          todo.id === id ? { ...todo, completed: !todo.completed } : todo
-        )
-      }
-    };
-    updateCurrentWeek(updatedWeek);
-  };
+  // const toggleTodoCompletion = (date: string, id: number) => {
+  //   const updatedWeek = {
+  //     ...currentWeek,
+  //     todos: {
+  //       ...currentWeek.todos,
+  //       [date]: currentWeek.todos[date].map(todo =>
+  //         todo.id === id ? { ...todo, completed: !todo.completed } : todo
+  //       )
+  //     }
+  //   };
+  //   updateCurrentWeek(updatedWeek);
+  // };
 
-  const deleteGoal = (id: number) => {
-    const updatedWeek = {
-      ...currentWeek,
-      goals: currentWeek.goals.filter(goal => goal.id !== id)
-    };
-    updateCurrentWeek(updatedWeek);
-  };
+  // const deleteGoal = (id: number) => {
+  //   const updatedWeek = {
+  //     ...currentWeek,
+  //     goals: currentWeek.goals.filter(goal => goal.id !== id)
+  //   };
+  //   updateCurrentWeek(updatedWeek);
+  // };
 
-  const deleteTodo = (date: string, id: number) => {
-    const updatedWeek = {
-      ...currentWeek,
-      todos: {
-        ...currentWeek.todos,
-        [date]: currentWeek.todos[date].filter(todo => todo.id !== id)
-      }
-    };
-    updateCurrentWeek(updatedWeek);
-  };
+  // const deleteTodo = (date: string, id: number) => {
+  //   const updatedWeek = {
+  //     ...currentWeek,
+  //     todos: {
+  //       ...currentWeek.todos,
+  //       [date]: currentWeek.todos[date].filter(todo => todo.id !== id)
+  //     }
+  //   };
+  //   updateCurrentWeek(updatedWeek);
+  // };
 
   const updateCurrentWeek = (updatedWeek: WeekData) => {
     setCurrentWeek(updatedWeek);
   };
 
-  const renderGoalInputSection = (type: "年間" | "月間" | "週間") => {
-    let value = "";
-    let setValue: React.Dispatch<React.SetStateAction<string>>;
-    switch (type) {
-      case "年間":
-        value = newYearlyGoal;
-        setValue = setNewYearlyGoal;
-        break;
-      case "月間":
-        value = newMonthlyGoal;
-        setValue = setNewMonthlyGoal;
-        break;
-      case "週間":
-        value = newWeeklyGoal;
-        setValue = setNewWeeklyGoal;
-        break;
-    }
-    return (
-      <div className="flex mb-4">
-        <input
-          type="text"
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          placeholder={`新しい${type}目標`}
-          className="flex-grow border-b-2 border-indigo-200 p-2 focus:outline-none focus:border-indigo-500 transition-colors duration-300 text-gray-800 placeholder-gray-400"
-        />
-        <button onClick={() => addGoal(type)} className="ml-2 bg-indigo-600 text-white p-2 rounded-full hover:bg-indigo-700 transition duration-300">
-          <FaPlus />
-        </button>
-      </div>
-    );
-  };
+  // const renderGoalInputSection = (type: "年間" | "月間" | "週間") => {
+  //   let value = "";
+  //   let setValue: React.Dispatch<React.SetStateAction<string>>;
+  //   switch (type) {
+  //     case "年間":
+  //       value = newYearlyGoal;
+  //       setValue = setNewYearlyGoal;
+  //       break;
+  //     case "月間":
+  //       value = newMonthlyGoal;
+  //       setValue = setNewMonthlyGoal;
+  //       break;
+  //     case "週間":
+  //       value = newWeeklyGoal;
+  //       setValue = setNewWeeklyGoal;
+  //       break;
+  //   }
+  //   return (
+  //     <div className="flex mb-4">
+  //       <input
+  //         type="text"
+  //         value={value}
+  //         onChange={(e) => setValue(e.target.value)}
+  //         placeholder={`新しい${type}目標`}
+  //         className="flex-grow border-b-2 border-indigo-200 p-2 focus:outline-none focus:border-indigo-500 transition-colors duration-300 text-gray-800 placeholder-gray-400"
+  //       />
+  //       <button onClick={() => addGoal(type)} className="ml-2 bg-indigo-600 text-white p-2 rounded-full hover:bg-indigo-700 transition duration-300">
+  //         <FaPlus />
+  //       </button>
+  //     </div>
+  //   );
+  // };
 
-  const renderGoalSection = (type: "年間" | "月間" | "週間") => {
-    const filteredGoals = currentWeek.goals.filter(goal => goal.type === type);
-    return (
-      <div className="mb-6">
-        <h3 className="text-xl font-semibold mb-3 text-indigo-700">{type}目標</h3>
-        {renderGoalInputSection(type)}
-        <ul className="space-y-2">
-          {filteredGoals.map((goal) => (
-            <li key={goal.id} className={`flex items-center p-2 rounded-lg transition-all duration-300 ${goal.achieved ? 'bg-gray-100' : 'bg-green-100'}`}>
-              <button
-                onClick={() => toggleGoalAchievement(goal.id)}
-                className={`mr-2 p-1 rounded-full transition-colors duration-300 ${goal.achieved ? 'bg-gray-400 text-white' : 'bg-green-600 text-white'}`}
-              >
-                {goal.achieved ? <FaTimes /> : <FaCheck />}
-              </button>
-              <span className={`flex-grow ${goal.achieved ? 'line-through text-gray-500' : 'text-gray-800 font-medium'}`}>
-                {goal.text}
-              </span>
-              <button
-                onClick={() => deleteGoal(goal.id)}
-                className="p-1 text-red-500 hover:text-red-700 transition-colors duration-300"
-              >
-                <FaTrash />
-              </button>
-            </li>
-          ))}
-        </ul>
-      </div>
-    );
-  };
+  // const renderGoalSection = (type: "年間" | "月間" | "週間") => {
+  //   const filteredGoals = currentWeek.goals.filter(goal => goal.type === type);
+  //   return (
+  //     <div className="mb-6">
+  //       <h3 className="text-xl font-semibold mb-3 text-indigo-700">{type}目標</h3>
+  //       {renderGoalInputSection(type)}
+  //       <ul className="space-y-2">
+  //         {filteredGoals.map((goal) => (
+  //           <li key={goal.id} className={`flex items-center p-2 rounded-lg transition-all duration-300 ${goal.achieved ? 'bg-gray-100' : 'bg-green-100'}`}>
+  //             <button
+  //               onClick={() => toggleGoalAchievement(goal.id)}
+  //               className={`mr-2 p-1 rounded-full transition-colors duration-300 ${goal.achieved ? 'bg-gray-400 text-white' : 'bg-green-600 text-white'}`}
+  //             >
+  //               {goal.achieved ? <FaTimes /> : <FaCheck />}
+  //             </button>
+  //             <span className={`flex-grow ${goal.achieved ? 'line-through text-gray-500' : 'text-gray-800 font-medium'}`}>
+  //               {goal.text}
+  //             </span>
+  //             <button
+  //               onClick={() => deleteGoal(goal.id)}
+  //               className="p-1 text-red-500 hover:text-red-700 transition-colors duration-300"
+  //             >
+  //               <FaTrash />
+  //             </button>
+  //           </li>
+  //         ))}
+  //       </ul>
+  //     </div>
+  //   );
+  // };
 
   const generateCalendar = (date: Date) => {
     const year = date.getFullYear();
@@ -335,45 +335,45 @@ export default function Home() {
     return `${startStr}〜${endStr}`;
   };
 
-  const onDragEnd = (result: DropResult) => {
-    const { source, destination } = result;
+  // const onDragEnd = (result: DropResult) => {
+  //   const { source, destination } = result;
 
-    if (!destination) {
-      return;
-    }
+  //   if (!destination) {
+  //     return;
+  //   }
 
-    setCurrentWeek(prevWeek => {
-      const newTodos = { ...prevWeek.todos };
-      const sourceDate = source.droppableId;
-      const destDate = destination.droppableId;
+  //   setCurrentWeek(prevWeek => {
+  //     const newTodos = { ...prevWeek.todos };
+  //     const sourceDate = source.droppableId;
+  //     const destDate = destination.droppableId;
 
-      if (!newTodos[sourceDate]) newTodos[sourceDate] = [];
-      if (!newTodos[destDate]) newTodos[destDate] = [];
+  //     if (!newTodos[sourceDate]) newTodos[sourceDate] = [];
+  //     if (!newTodos[destDate]) newTodos[destDate] = [];
 
-      const [movedTodo] = newTodos[sourceDate].splice(source.index, 1);
-      newTodos[destDate].splice(destination.index, 0, movedTodo);
+  //     const [movedTodo] = newTodos[sourceDate].splice(source.index, 1);
+  //     newTodos[destDate].splice(destination.index, 0, movedTodo);
 
-      return { ...prevWeek, todos: newTodos };
-    });
-  };
+  //     return { ...prevWeek, todos: newTodos };
+  //   });
+  // };
 
-  const handleGoalSubmit = (e: FormEvent<HTMLFormElement>, goalType: 'yearly' | 'monthly' | 'weekly') => {
-    e.preventDefault();
-    const input = e.currentTarget.elements.namedItem('newGoal') as HTMLInputElement;
-    if (input.value.trim()) {
-      addGoal(goalType, input.value.trim());
-      input.value = '';
-    }
-  };
+  // const handleGoalSubmit = (e: FormEvent<HTMLFormElement>, goalType: 'yearly' | 'monthly' | 'weekly') => {
+  //   e.preventDefault();
+  //   const input = e.currentTarget.elements.namedItem('newGoal') as HTMLInputElement;
+  //   if (input.value.trim()) {
+  //     addGoal(goalType, input.value.trim());
+  //     input.value = '';
+  //   }
+  // };
 
-  const handleTodoSubmit = (e: FormEvent<HTMLFormElement>, dateStr: string) => {
-    e.preventDefault();
-    const input = e.currentTarget.elements.namedItem('newTodo') as HTMLInputElement;
-    if (input.value.trim()) {
-      addTodo(dateStr, input.value.trim());
-      input.value = '';
-    }
-  };
+  // const handleTodoSubmit = (e: FormEvent<HTMLFormElement>, dateStr: string) => {
+  //   e.preventDefault();
+  //   const input = e.currentTarget.elements.namedItem('newTodo') as HTMLInputElement;
+  //   if (input.value.trim()) {
+  //     addTodo(dateStr, input.value.trim());
+  //     input.value = '';
+  //   }
+  // };
 
 
 
@@ -414,144 +414,142 @@ export default function Home() {
 
   
   return (
-    <DragDropContext onDragEnd={onDragEnd}>      
-      <main className="flex min-h-screen flex-col items-center p-8 bg-gray-100">
-        <h1 className="text-4xl font-bold mb-8 text-center text-indigo-800">週間プランナー</h1>
-        
-        <div className="flex justify-center items-center mb-4 space-x-4">
-          <button onClick={() => changeWeek(-1)} className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition duration-300">
-            <FaChevronLeft className="inline mr-2" /> 前の週
-          </button>
-          <span className="text-lg font-semibold text-gray-500 font-medium">
-            {formatWeekRange(currentWeek.startDate)}
-          </span>
-          <button onClick={() => changeWeek(1)} className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition duration-300">
-            次の週 <FaChevronRight className="inline ml-2" />
-          </button>
-        </div>
-        
-        <div className="flex flex-col lg:flex-row w-full max-w-7xl gap-8">
-          {/* 左側：カレンダーと週間目標 */}
-          <div className="w-full lg:w-1/2 space-y-8">
-            {/* 月間カレンダー */}
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              <div className="flex justify-between items-center mb-4">
-                <button onClick={() => changeMonth(-1)} className="text-indigo-600 hover:text-indigo-800 transition-colors">
-                  <FaChevronLeft className="text-xl" />
-                </button>
-                <h2 className="text-2xl font-semibold text-indigo-800">
-                  {currentMonth.toLocaleString('ja-JP', { year: 'numeric', month: 'long' })}
-                </h2>
-                <button onClick={() => changeMonth(1)} className="text-indigo-600 hover:text-indigo-800 transition-colors">
-                  <FaChevronRight className="text-xl" />
-                </button>
-              </div>
-              <table className="w-full border-collapse">
-                <thead>
-                  <tr>
-                    {['月', '火', '水', '木', '金', '土', '日'].map(day => (
-                      <th key={day} className="p-2 text-center font-semibold text-indigo-800 border-b-2 border-indigo-200">
-                        {day}
-                      </th>
+    <main className="flex min-h-screen flex-col items-center p-8 bg-gray-100">
+      <h1 className="text-4xl font-bold mb-8 text-center text-indigo-800">週間プランナー</h1>
+      
+      <div className="flex justify-center items-center mb-4 space-x-4">
+        <button onClick={() => changeWeek(-1)} className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition duration-300">
+          <FaChevronLeft className="inline mr-2" /> 前の週
+        </button>
+        <span className="text-lg font-semibold text-gray-500 font-medium">
+          {formatWeekRange(currentWeek.startDate)}
+        </span>
+        <button onClick={() => changeWeek(1)} className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition duration-300">
+          次の週 <FaChevronRight className="inline ml-2" />
+        </button>
+      </div>
+      
+      <div className="flex flex-col lg:flex-row w-full max-w-7xl gap-8">
+        {/* 左側：カレンダーと週間目標 */}
+        <div className="w-full lg:w-1/2 space-y-8">
+          {/* 月間カレンダー */}
+          <div className="bg-white rounded-xl shadow-lg p-6">
+            <div className="flex justify-between items-center mb-4">
+              <button onClick={() => changeMonth(-1)} className="text-indigo-600 hover:text-indigo-800 transition-colors">
+                <FaChevronLeft className="text-xl" />
+              </button>
+              <h2 className="text-2xl font-semibold text-indigo-800">
+                {currentMonth.toLocaleString('ja-JP', { year: 'numeric', month: 'long' })}
+              </h2>
+              <button onClick={() => changeMonth(1)} className="text-indigo-600 hover:text-indigo-800 transition-colors">
+                <FaChevronRight className="text-xl" />
+              </button>
+            </div>
+            <table className="w-full border-collapse">
+              <thead>
+                <tr>
+                  {['月', '火', '水', '木', '金', '土', '日'].map(day => (
+                    <th key={day} className="p-2 text-center font-semibold text-indigo-800 border-b-2 border-indigo-200">
+                      {day}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {generateCalendar(currentMonth).map((week, i) => (
+                  <tr key={i}>
+                    {week.map((day, j) => (
+                      <td key={j} className={`p-3 text-center border border-indigo-100
+                        ${day.getMonth() === currentMonth.getMonth() ? 'hover:bg-indigo-50 transition-colors' : 'bg-gray-50'}
+                        ${isCurrentWeek(day) ? 'bg-indigo-100' : ''}
+                        ${isToday(day) ? 'bg-yellow-300 font-bold' : ''}
+                        ${getDayColor(day, j)}
+                      `}>
+                        {day.getDate()}
+                      </td>
                     ))}
                   </tr>
-                </thead>
-                <tbody>
-                  {generateCalendar(currentMonth).map((week, i) => (
-                    <tr key={i}>
-                      {week.map((day, j) => (
-                        <td key={j} className={`p-3 text-center border border-indigo-100
-                          ${day.getMonth() === currentMonth.getMonth() ? 'hover:bg-indigo-50 transition-colors' : 'bg-gray-50'}
-                          ${isCurrentWeek(day) ? 'bg-indigo-100' : ''}
-                          ${isToday(day) ? 'bg-yellow-300 font-bold' : ''}
-                          ${getDayColor(day, j)}
-                        `}>
-                          {day.getDate()}
-                        </td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
-            {/* 週間目標 */}
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              {/* <h2 className="text-2xl font-semibold mb-4 text-indigo-800">週間目標</h2> */}
-              {/* {renderGoalSection("年間")} */}
-              <YGoalsApp type="year" />
-              {/* {renderGoalSection("月間")} */}
-              <YGoalsApp type="month" />
-              {/* {renderGoalSection("週間")} */}
-              <YGoalsApp type="week" />
-            </div>
+                ))}
+              </tbody>
+            </table>
           </div>
 
-          {/* 右側：TODO���ト */}
-          <div className="w-full lg:w-1/2">
-            <div className="bg-white rounded-xl shadow-lg p-6 transition-all duration-300 hover:shadow-xl">
-              <h2 className="text-2xl font-semibold mb-6 text-indigo-800 flex items-center">
-                <FaCalendarAlt className="mr-2" /> TODOリスト
-              </h2>
-              {weekDates.map((date) => (
-                <div key={date} className="mb-6">
-                  <TodoApp date={date} />
-                  {/* <h3 className="text-lg font-semibold mb-2 text-indigo-700">{formatDate(date)}</h3> */}
-                  
-                  {/* <div className="flex mb-4">
-                    <input
-                      type="text"
-                      value={selectedDate === date ? newTodo : ""}
-                      onChange={(e) => {
-                        setSelectedDate(date);
-                        setNewTodo(e.target.value);
-                      }}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter') {
-                          e.preventDefault(); // フォームの送信を防ぐ1   
-                          addTodo();
-                        }
-                      }}
-                      placeholder="新しいTODO"
-                      className="flex-grow border-b-2 border-indigo-200 p-2 focus:outline-none focus:border-indigo-500 transition-colors duration-300 text-gray-800 placeholder-gray-400"
-                    />
-                    <button 
-                      onClick={addTodo} 
-                      className="ml-2 bg-indigo-600 text-white p-2 rounded-full hover:bg-indigo-700 transition duration-300"
-                      disabled={selectedDate !== date}
-                    >
-                      <FaPlus />
-                    </button>
-                  </div>
-
-                  <ul className="space-y-3">
-                    {(currentWeek.todos[date] || []).map((todo) => (
-                      <li key={todo.id} className={`flex items-center p-3 rounded-lg transition-all duration-300 ${todo.completed ? 'bg-gray-100' : 'bg-green-100'}`}>
-                        <button
-                          onClick={() => toggleTodoCompletion(date, todo.id)}
-                          className={`mr-3 p-1 rounded-full transition-colors duration-300 ${todo.completed ? 'bg-gray-400 text-white' : 'bg-green-600 text-white'}`}
-                        >
-                          {todo.completed ? <FaTimes /> : <FaCheck />}
-                        </button>
-                        <span className={`flex-grow ${todo.completed ? 'line-through text-gray-500' : 'text-gray-800 font-medium'}`}>
-                          {todo.text}
-                        </span>
-                        <button
-                          onClick={() => deleteTodo(date, todo.id)}
-                          className="p-1 text-red-500 hover:text-red-700 transition-colors duration-300"
-                        >
-                          <FaTrash />
-                        </button>
-                      </li>
-                    ))}
-                  </ul> */}
-                </div>
-              ))}
-            </div>
+          {/* 週間目標 */}
+          <div className="bg-white rounded-xl shadow-lg p-6">
+            {/* <h2 className="text-2xl font-semibold mb-4 text-indigo-800">週間目標</h2> */}
+            {/* {renderGoalSection("年間")} */}
+            <YGoalsApp type="year" />
+            {/* {renderGoalSection("月間")} */}
+            <YGoalsApp type="month" />
+            {/* {renderGoalSection("週間")} */}
+            <YGoalsApp type="week" />
           </div>
         </div>
-      </main>
-    </DragDropContext>
+
+        {/* 右側：TODO���ト */}
+        <div className="w-full lg:w-1/2">
+          <div className="bg-white rounded-xl shadow-lg p-6 transition-all duration-300 hover:shadow-xl">
+            <h2 className="text-2xl font-semibold mb-6 text-indigo-800 flex items-center">
+              <FaCalendarAlt className="mr-2" /> TODOリスト
+            </h2>
+            {weekDates.map((date) => (
+              <div key={date} className="mb-6">
+                <TodoApp date={date} />
+                {/* <h3 className="text-lg font-semibold mb-2 text-indigo-700">{formatDate(date)}</h3> */}
+                
+                {/* <div className="flex mb-4">
+                  <input
+                    type="text"
+                    value={selectedDate === date ? newTodo : ""}
+                    onChange={(e) => {
+                      setSelectedDate(date);
+                      setNewTodo(e.target.value);
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault(); // フォームの送信を防ぐ1   
+                        addTodo();
+                      }
+                    }}
+                    placeholder="新しいTODO"
+                    className="flex-grow border-b-2 border-indigo-200 p-2 focus:outline-none focus:border-indigo-500 transition-colors duration-300 text-gray-800 placeholder-gray-400"
+                  />
+                  <button 
+                    onClick={addTodo} 
+                    className="ml-2 bg-indigo-600 text-white p-2 rounded-full hover:bg-indigo-700 transition duration-300"
+                    disabled={selectedDate !== date}
+                  >
+                    <FaPlus />
+                  </button>
+                </div>
+
+                <ul className="space-y-3">
+                  {(currentWeek.todos[date] || []).map((todo) => (
+                    <li key={todo.id} className={`flex items-center p-3 rounded-lg transition-all duration-300 ${todo.completed ? 'bg-gray-100' : 'bg-green-100'}`}>
+                      <button
+                        onClick={() => toggleTodoCompletion(date, todo.id)}
+                        className={`mr-3 p-1 rounded-full transition-colors duration-300 ${todo.completed ? 'bg-gray-400 text-white' : 'bg-green-600 text-white'}`}
+                      >
+                        {todo.completed ? <FaTimes /> : <FaCheck />}
+                      </button>
+                      <span className={`flex-grow ${todo.completed ? 'line-through text-gray-500' : 'text-gray-800 font-medium'}`}>
+                        {todo.text}
+                      </span>
+                      <button
+                        onClick={() => deleteTodo(date, todo.id)}
+                        className="p-1 text-red-500 hover:text-red-700 transition-colors duration-300"
+                      >
+                        <FaTrash />
+                      </button>
+                    </li>
+                  ))}
+                </ul> */}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </main>
   );
 }
 
