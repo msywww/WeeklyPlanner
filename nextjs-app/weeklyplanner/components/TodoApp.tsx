@@ -122,7 +122,7 @@ function TodosApp({ date }: TodoAppProps) {
               {todo.complete ? <FaTimes /> : <FaCheck />}
             </button>
             <span className={`flex-grow ${todo.complete ? 'line-through text-gray-500' : 'text-gray-800 font-medium'}`}>
-              {todo.todo}
+              {String(todo.todo)}
             </span>
             <button
               onClick={() => handleDelete(todo.id)}

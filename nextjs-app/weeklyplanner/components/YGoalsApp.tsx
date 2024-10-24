@@ -162,7 +162,7 @@ function YGoalsApp({ type }: YGoalsAppProps) {
             {goal.complete ? <FaTimes /> : <FaCheck />}
           </button>
           <span className={`flex-grow ${goal.complete ? 'line-through text-gray-500' : 'text-gray-800 font-medium'}`}>
-            {goal.goal}
+            {String(goal.goal)}
           </span>
           <button
             onClick={() => handleDelete(goal.id)}
