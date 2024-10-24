@@ -52,7 +52,7 @@ function TodosApp({ date }: TodoAppProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (todo === "") return;
+    if (todo === null || todo.text === "") return; // 'text' は 'Todo' 型のプロパティ名の例です
     const addTodoFunction = supabaseFunctions.addTodos;
 
     if (addTodoFunction) {
