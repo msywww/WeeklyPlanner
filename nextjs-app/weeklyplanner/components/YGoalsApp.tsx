@@ -17,8 +17,10 @@ function YGoalsApp({ type }: YGoalsAppProps) {
     id: number;
     title: string;
     description: string;
+    complete: boolean;
     date: string; // 日付の形式に応じて型を変更してください
     text: string;
+    goal: Text;
     // 他のプロパティを追加
   }
 
@@ -55,7 +57,7 @@ function YGoalsApp({ type }: YGoalsAppProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (goal === "") return;
+    if (goal === null || goal.text === "") return; // 'text' は 'Todo' 型のプロパティ名の例です
 
     let addGoalFunction;
     switch (type) {
@@ -73,7 +75,7 @@ function YGoalsApp({ type }: YGoalsAppProps) {
     if (addGoalFunction) {
       await addGoalFunction(goal);
       await fetchGoals(); // fetchGoals を直接呼び出す
-      setGoal("");
+      setGoal(null);
     }
   };
 
@@ -94,7 +96,7 @@ function YGoalsApp({ type }: YGoalsAppProps) {
     if (deleteGoalFunction) {
       await deleteGoalFunction(id);
       await fetchGoals(); // fetchGoals を直接呼び出す
-      setGoal("");
+      setGoal(null);
     }
   };
   
@@ -116,7 +118,7 @@ function YGoalsApp({ type }: YGoalsAppProps) {
     if (completeGoalFunction) {
       await completeGoalFunction(id);
       await fetchGoals(); // fetchGoals を直接呼び出す
-      setGoal("");
+      setGoal(null);
     }
   };
 
@@ -157,7 +159,7 @@ function YGoalsApp({ type }: YGoalsAppProps) {
             onClick={() => handleComplete(goal.id)}
             className={`mr-2 p-1 transition-colors duration-300 ${goal.complete ? 'bg-gray-400 text-white' : 'bg-green-600 text-white'}`}
           >
-            {goal.achieved ? <FaTimes /> : <FaCheck />}
+            {goal.complete ? <FaTimes /> : <FaCheck />}
           </button>
           <span className={`flex-grow ${goal.complete ? 'line-through text-gray-500' : 'text-gray-800 font-medium'}`}>
             {goal.goal}

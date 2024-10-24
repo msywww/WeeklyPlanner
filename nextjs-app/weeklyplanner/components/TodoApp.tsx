@@ -28,8 +28,10 @@ function TodosApp({ date }: TodoAppProps) {
   interface Todo {
     id: number;
     title: string;
-    completed: boolean;
+    complete: boolean;
     text: string;
+    todo: Text;
+    date: Date;
   }
 
   const [todo, setTodo] = useState<Todo | null>(null);
@@ -58,7 +60,7 @@ function TodosApp({ date }: TodoAppProps) {
     if (addTodoFunction) {
       await addTodoFunction(todo, date);
       await fetchTodos(); // fetchGoals を直接呼び出す
-      setTodo("");
+      setTodo(null);
     }
   };
 
@@ -69,7 +71,7 @@ function TodosApp({ date }: TodoAppProps) {
     if (deleteTodoFunction) {
       await deleteTodoFunction(id);
       await fetchTodos(); // fetchGoals を直接呼び出す
-      setTodo("");
+      setTodo(null);
     }
   };
 
@@ -79,7 +81,7 @@ function TodosApp({ date }: TodoAppProps) {
     if (completeTodoFunction) {
       await completeTodoFunction(id);
       await fetchTodos(); // fetchGoals を直接呼び出す
-      setTodo("");
+      setTodo(null);
     }
   };
 
@@ -92,8 +94,10 @@ function TodosApp({ date }: TodoAppProps) {
       >
         <input 
           type="text"
-          onChange={(e) => setTodo(e.target.value)}
-          value={todo}
+          onChange={(e) => setTodo(e.target.value as unknown as Todo)}
+          value={typeof todo === 'string' ? todo : todo?.toString() ?? ''}
+          // onChange={(e) => setTodo(e.target.value)}
+          // value={todo}
           placeholder={`新しいTodo`}
           className="flex-grow border-b-2 border-indigo-200 p-1 focus:outline-none focus:border-indigo-500 transition-colors duration-300 text-gray-800 placeholder-gray-400"
         />
@@ -115,7 +119,7 @@ function TodosApp({ date }: TodoAppProps) {
               onClick={() => handleComplete(todo.id)}
               className={`mr-2 p-1 transition-colors duration-300 ${todo.complete ? 'bg-gray-400 text-white' : 'bg-green-600 text-white'}`}
             >
-              {todo.achieved ? <FaTimes /> : <FaCheck />}
+              {todo.complete ? <FaTimes /> : <FaCheck />}
             </button>
             <span className={`flex-grow ${todo.complete ? 'line-through text-gray-500' : 'text-gray-800 font-medium'}`}>
               {todo.todo}
