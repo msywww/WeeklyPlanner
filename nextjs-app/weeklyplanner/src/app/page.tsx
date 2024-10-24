@@ -289,7 +289,7 @@ export default function Home() {
     return calendar;
   };
 
-  const calendar = generateCalendar(currentMonth);
+  // const calendar = generateCalendar(currentMonth);
 
   const isCurrentWeek = (date: Date) => {
     const weekStart = new Date(currentWeek.startDate);
@@ -501,15 +501,15 @@ export default function Home() {
   );
 }
 
-function formatDate(dateString: string) {
-  try {
-    const date = new Date(dateString);
-    const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
-    return new Intl.DateTimeFormat('ja-JP', options).format(date);
-  } catch {
-    return "無効な日付";
-  }
-}
+// function formatDate(dateString: string) {
+//   try {
+//     const date = new Date(dateString);
+//     const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
+//     return new Intl.DateTimeFormat('ja-JP', options).format(date);
+//   } catch {
+//     return "無効な日付";
+//   }
+// }
 
 function getMonday(d: Date) {
   d = new Date(d);

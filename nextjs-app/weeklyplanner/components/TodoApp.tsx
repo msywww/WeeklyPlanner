@@ -4,7 +4,7 @@ import { FaPlus, FaCheck, FaTimes, FaTrash } from "react-icons/fa";
 
 
 type TodoAppProps = {
-  date:any;
+  date: string;
 };
 
 function formatDate(dateString: string) {
@@ -29,8 +29,7 @@ function TodosApp({ date }: TodoAppProps) {
   const [todos, setTodos] = useState<any[]>([]);
   
   const fetchTodos = async () => {
-    let fetchFunction;
-    fetchFunction = supabaseFunctions.getTodos;
+    const fetchFunction = supabaseFunctions.getTodos;
     
     if (fetchFunction) {
       const fetchedTodos = await fetchFunction();
@@ -47,9 +46,7 @@ function TodosApp({ date }: TodoAppProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (todo === "") return;
-
-    let addTodoFunction;
-    addTodoFunction = supabaseFunctions.addTodos;
+    const addTodoFunction = supabaseFunctions.addTodos;
 
     if (addTodoFunction) {
       await addTodoFunction(todo, date);
@@ -60,8 +57,7 @@ function TodosApp({ date }: TodoAppProps) {
 
 
   const handleDelete = async (id: number) => {
-    let deleteTodoFunction;
-    deleteTodoFunction = supabaseFunctions.deleteTodos;
+    const deleteTodoFunction = supabaseFunctions.deleteTodos;
     
     if (deleteTodoFunction) {
       await deleteTodoFunction(id);
@@ -70,18 +66,15 @@ function TodosApp({ date }: TodoAppProps) {
     }
   };
 
-
   const handleComplete = async (id: number) => { 
-    let completeTodoFunction;
-    completeTodoFunction = supabaseFunctions.completeTodos;
-
+    const completeTodoFunction = supabaseFunctions.completeTodos;
+  
     if (completeTodoFunction) {
       await completeTodoFunction(id);
       await fetchTodos(); // fetchGoals を直接呼び出す
       setTodo("");
     }
   };
-
 
   return(
     <div>
@@ -104,7 +97,7 @@ function TodosApp({ date }: TodoAppProps) {
       <ul className="space-y-2">
         {todos
         .sort((a, b) => a.id - b.id)
-        .filter((todo: any) => {
+        .filter((todo) => {
           const todoDate = new Date(todo.date);
           const target = new Date(date);
           return todoDate.toDateString() === target.toDateString();

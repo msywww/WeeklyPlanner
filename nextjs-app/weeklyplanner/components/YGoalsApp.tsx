@@ -13,8 +13,19 @@ type YGoalsAppProps = {
 // ... 既存のインポートと型定義 ...
 
 function YGoalsApp({ type }: YGoalsAppProps) {
-  const [goal, setGoal] = useState<any>([]);
-  const [goals, setGoals] = useState<any[]>([]);
+  interface Goal {
+    id: number;
+    title: string;
+    description: string;
+    date: string; // 日付の形式に応じて型を変更してください
+    // 他のプロパティを追加
+  }
+
+  const [goal, setGoal] = useState<Goal | null>(null);
+  const [goals, setGoals] = useState<Goal[]>([]);
+
+  // const [goal, setGoal] = useState<any>([]);
+  // const [goals, setGoals] = useState<any[]>([]);
   
   const fetchGoals = async () => {
     let fetchFunction;
@@ -129,8 +140,8 @@ function YGoalsApp({ type }: YGoalsAppProps) {
       >
         <input 
           type="text"
-          onChange={(e) => setGoal(e.target.value)}
-          value={goal}
+          onChange={(e) => setGoal(e.target.value as unknown as Goal)}
+          value={typeof goal === 'string' ? goal : goal?.toString() ?? ''}
           placeholder={`新しい${getTitle()}`}
           className="flex-grow border-b-2 border-indigo-200 p-1 focus:outline-none focus:border-indigo-500 transition-colors duration-300 text-gray-800 placeholder-gray-400"
         />
