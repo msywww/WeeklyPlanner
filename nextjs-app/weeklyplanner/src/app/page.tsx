@@ -15,7 +15,7 @@ interface Goal {
 
 interface WeekData {
   startDate: string;
-  todos: { [date: string]: Todo[] };
+  todos: { [date: string]: Goal[] };
   goals: Goal[];
 }
 
