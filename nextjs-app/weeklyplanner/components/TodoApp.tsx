@@ -25,8 +25,14 @@ function formatDate(dateString: string) {
 
 
 function TodosApp({ date }: TodoAppProps) {
-  const [todo, setTodo] = useState<any>([]);
-  const [todos, setTodos] = useState<any[]>([]);
+  interface Todo {
+    id: number;
+    title: string;
+    completed: boolean;
+  }
+
+  const [todo, setTodo] = useState<Todo | null>(null);
+  const [todos, setTodos] = useState<Todo[]>([]);
   
   const fetchTodos = async () => {
     const fetchFunction = supabaseFunctions.getTodos;
