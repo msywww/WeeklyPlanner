@@ -1,6 +1,6 @@
 import React, { useEffect, useState} from "react";
 import * as supabaseFunctions from "../utils/supabaseFunctions";
-import { FaPlus, FaCheck, FaTimes, FaCalendarAlt, FaBullseye, FaTrash, FaArrowLeft, FaArrowRight, FaChevronLeft, FaChevronRight, FaGripVertical } from "react-icons/fa";
+import { FaPlus, FaCheck, FaTimes, FaTrash } from "react-icons/fa";
 
 
 type TodoAppProps = {

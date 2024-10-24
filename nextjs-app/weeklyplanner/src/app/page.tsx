@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useEffect, FormEvent } from 'react';
-import { FaMarker, FaPlus, FaCheck, FaTimes, FaCalendarAlt, FaBullseye, FaTrash, FaArrowLeft, FaArrowRight, FaChevronLeft, FaChevronRight, FaGripVertical } from "react-icons/fa";
+import React, { useState, useEffect } from 'react';
+import { FaMarker, FaCalendarAlt, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import YGoalsApp from '../../components/YGoalsApp';
 import TodoApp from '../../components/TodoApp';
 
@@ -30,11 +30,11 @@ export default function Home() {
     };
   });
   const [currentMonth, setCurrentMonth] = useState(new Date());
-  const [newYearlyGoal, setNewYearlyGoal] = useState("");
-  const [newMonthlyGoal, setNewMonthlyGoal] = useState("");
-  const [newWeeklyGoal, setNewWeeklyGoal] = useState("");
-  const [selectedDate, setSelectedDate] = useState("");
-  const [newTodo, setNewTodo] = useState("");
+  // const [newYearlyGoal, setNewYearlyGoal] = useState("");
+  // const [newMonthlyGoal, setNewMonthlyGoal] = useState("");
+  // const [newWeeklyGoal, setNewWeeklyGoal] = useState("");
+  // const [selectedDate, setSelectedDate] = useState("");
+  // const [newTodo, setNewTodo] = useState("");
   const [today] = useState(new Date());
 
   useEffect(() => {
@@ -188,9 +188,9 @@ export default function Home() {
   //   updateCurrentWeek(updatedWeek);
   // };
 
-  const updateCurrentWeek = (updatedWeek: WeekData) => {
-    setCurrentWeek(updatedWeek);
-  };
+  // const updateCurrentWeek = (updatedWeek: WeekData) => {
+  //   setCurrentWeek(updatedWeek);
+  // };
 
   // const renderGoalInputSection = (type: "年間" | "月間" | "週間") => {
   //   let value = "";

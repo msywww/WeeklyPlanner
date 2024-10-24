@@ -1,7 +1,7 @@
 import React, { useEffect, useState} from "react";
 // import { addYearGoals, getYearGoals, deleteYearGoals } from "../utils/supabaseFunctions";
 import * as supabaseFunctions from "../utils/supabaseFunctions";
-import { FaPlus, FaCheck, FaTimes, FaCalendarAlt, FaBullseye, FaTrash, FaArrowLeft, FaArrowRight, FaChevronLeft, FaChevronRight, FaGripVertical } from "react-icons/fa";
+import { FaPlus, FaCheck, FaTimes, FaTrash } from "react-icons/fa";
 
 type YGoalsAppProps = {
   type: 'year' | 'week' | 'month';
