@@ -29,6 +29,7 @@ function TodosApp({ date }: TodoAppProps) {
     id: number;
     title: string;
     completed: boolean;
+    text: string;
   }
 
   const [todo, setTodo] = useState<Todo | null>(null);
@@ -108,7 +109,7 @@ function TodosApp({ date }: TodoAppProps) {
           const target = new Date(date);
           return todoDate.toDateString() === target.toDateString();
         })
-        .map((todo:any) =>  (
+        .map((todo: Todo) =>  (
           <li key={todo.id} className={`flex items-center p-2 rounded-lg transition-all duration-300 ${todo.complete ? 'bg-gray-100' : 'bg-green-100'}`}>
             <button
               onClick={() => handleComplete(todo.id)}
