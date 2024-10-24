@@ -1,13 +1,9 @@
 "use client";
 
 import React, { useState, useEffect, FormEvent } from 'react';
-import { FaPlus, FaCheck, FaTimes, FaCalendarAlt, FaBullseye, FaTrash, FaArrowLeft, FaArrowRight, FaChevronLeft, FaChevronRight, FaGripVertical } from "react-icons/fa";
-import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
+import { FaMarker, FaPlus, FaCheck, FaTimes, FaCalendarAlt, FaBullseye, FaTrash, FaArrowLeft, FaArrowRight, FaChevronLeft, FaChevronRight, FaGripVertical } from "react-icons/fa";
 import YGoalsApp from '../../components/YGoalsApp';
 import TodoApp from '../../components/TodoApp';
-import {ygoals} from '../../utils/interface';
-
-import { getYearGoals } from "../../utils/supabaseFunctions";
 
 
 interface Goal {
@@ -43,7 +39,7 @@ export default function Home() {
 
   useEffect(() => {
     const today = new Date();
-    const monday = new Date(today.setDate(today.getDate() - today.getDay() + 2));
+    const monday = new Date(today.setDate(today.getDate() - today.getDay() + 1));
     const startDate = monday.toISOString().split('T')[0];
     
     if (currentWeek.startDate !== startDate) {
@@ -416,7 +412,9 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center p-8 bg-gray-100">
       <h1 className="text-4xl font-bold mb-8 text-center text-indigo-800">週間プランナー</h1>
-      
+      {/* <div className="text-center mb-4">
+        <p className="text-lg font-semibold text-gray-700">現在の日時: {today.toLocaleString('ja-JP')}</p>
+      </div> */}
       <div className="flex justify-center items-center mb-4 space-x-4">
         <button onClick={() => changeWeek(-1)} className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition duration-300">
           <FaChevronLeft className="inline mr-2" /> 前の週
@@ -476,12 +474,11 @@ export default function Home() {
 
           {/* 週間目標 */}
           <div className="bg-white rounded-xl shadow-lg p-6">
-            {/* <h2 className="text-2xl font-semibold mb-4 text-indigo-800">週間目標</h2> */}
-            {/* {renderGoalSection("年間")} */}
+            <h2 className="text-2xl font-semibold mb-6 text-indigo-800 flex items-center">
+              <FaMarker className="mr-2" />目標リスト
+            </h2>
             <YGoalsApp type="year" />
-            {/* {renderGoalSection("月間")} */}
             <YGoalsApp type="month" />
-            {/* {renderGoalSection("週間")} */}
             <YGoalsApp type="week" />
           </div>
         </div>
@@ -495,55 +492,6 @@ export default function Home() {
             {weekDates.map((date) => (
               <div key={date} className="mb-6">
                 <TodoApp date={date} />
-                {/* <h3 className="text-lg font-semibold mb-2 text-indigo-700">{formatDate(date)}</h3> */}
-                
-                {/* <div className="flex mb-4">
-                  <input
-                    type="text"
-                    value={selectedDate === date ? newTodo : ""}
-                    onChange={(e) => {
-                      setSelectedDate(date);
-                      setNewTodo(e.target.value);
-                    }}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') {
-                        e.preventDefault(); // フォームの送信を防ぐ1   
-                        addTodo();
-                      }
-                    }}
-                    placeholder="新しいTODO"
-                    className="flex-grow border-b-2 border-indigo-200 p-2 focus:outline-none focus:border-indigo-500 transition-colors duration-300 text-gray-800 placeholder-gray-400"
-                  />
-                  <button 
-                    onClick={addTodo} 
-                    className="ml-2 bg-indigo-600 text-white p-2 rounded-full hover:bg-indigo-700 transition duration-300"
-                    disabled={selectedDate !== date}
-                  >
-                    <FaPlus />
-                  </button>
-                </div>
-
-                <ul className="space-y-3">
-                  {(currentWeek.todos[date] || []).map((todo) => (
-                    <li key={todo.id} className={`flex items-center p-3 rounded-lg transition-all duration-300 ${todo.completed ? 'bg-gray-100' : 'bg-green-100'}`}>
-                      <button
-                        onClick={() => toggleTodoCompletion(date, todo.id)}
-                        className={`mr-3 p-1 rounded-full transition-colors duration-300 ${todo.completed ? 'bg-gray-400 text-white' : 'bg-green-600 text-white'}`}
-                      >
-                        {todo.completed ? <FaTimes /> : <FaCheck />}
-                      </button>
-                      <span className={`flex-grow ${todo.completed ? 'line-through text-gray-500' : 'text-gray-800 font-medium'}`}>
-                        {todo.text}
-                      </span>
-                      <button
-                        onClick={() => deleteTodo(date, todo.id)}
-                        className="p-1 text-red-500 hover:text-red-700 transition-colors duration-300"
-                      >
-                        <FaTrash />
-                      </button>
-                    </li>
-                  ))}
-                </ul> */}
               </div>
             ))}
           </div>
