@@ -18,6 +18,7 @@ function YGoalsApp({ type }: YGoalsAppProps) {
     title: string;
     description: string;
     date: string; // 日付の形式に応じて型を変更してください
+    text: string;
     // 他のプロパティを追加
   }
 
@@ -150,7 +151,7 @@ function YGoalsApp({ type }: YGoalsAppProps) {
         </button>
       </form>
       <ul className="space-y-2">
-        {goals.sort((a, b) => a.id - b.id).map((goal:any) => (
+        {goals.sort((a, b) => a.id - b.id).map((goal: Goal) => (
           <li key={goal.id} className={`flex items-center p-2 rounded-lg transition-all duration-300 ${goal.complete ? 'bg-gray-100' : 'bg-green-100'}`}>
           <button
             onClick={() => handleComplete(goal.id)}
